@@ -12,8 +12,11 @@ suf='.svg'
 
 for i in src/*.links
 do
-    source="src/$(basename $i .links).svg"
-    if [ -f "$source" ]
+    source="src/$(basename $i .links)"
+    if [ -f "$source".png ]
+    then
+        links="$links $i"
+    elif [ -f "$source".svg ]
     then
         links="$links $i"
     else
@@ -46,10 +49,23 @@ printf "\tcp src/index.theme $name/\n"
 
 for i in $links
 do
-    local source="src/$(basename "$i" .links).svg"
+    local prev_source="src/$(basename "$i" .links)"
+
+    if [ -f "$prev_source".png ]
+    then
+        local source="$prev_source".png
+    elif [ -f "$prev_source".svg ]
+    then
+        local source="$prev_source".svg
+    fi
+
     local bsource="$(basename "$source")"
     for j in $(cat $i)
     do
+         if [ $(expr substr $j 1 1) = \# ]
+         then
+             continue
+         fi
         icons="$icons $path/$j"
         echo "$path/$j: $name/index.theme"
         if [ "$bsource" = "$j" ]
@@ -64,7 +80,7 @@ done
 echo "icons: $icons"
 
 echo "preview.png: $preview"
-printf "\tmontage -verbose -resize 64 -geometry +16+16 -tile 9x6 $preview preview.png\n"
+printf "\tmontage -verbose -resize 64 -geometry +16+16 -tile 9x6 $preview preview.png"
 
 }
 
