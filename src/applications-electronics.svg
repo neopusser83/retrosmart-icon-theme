@@ -263,7 +263,7 @@
            inkscape:connector-curvature="0"
            id="path157"
            d="M 42.704,9.611 39.615,9.315 31.407,17.067 0,48.07 5.464,48.146 40.881,25.348 29.094,24.17 42.704,9.611 Z"
-           a:adobe-blending-mode="multiply" /><path
+            /><path
            style="stroke:none"
            inkscape:connector-curvature="0"
            id="path158"
@@ -363,7 +363,7 @@
        transform="matrix(-0.69761653,-0.27583361,-0.27583361,0.69761653,30.550212,11.792142)"
        style="stroke:#000000"><g
          id="g8162"><path
-           a:adobe-blending-mode="multiply"
+           
            d="M 42.704,9.611 39.615,9.315 31.407,17.067 0,48.07 5.464,48.146 40.881,25.348 29.094,24.17 42.704,9.611 Z"
            id="path8164"
            inkscape:connector-curvature="0"

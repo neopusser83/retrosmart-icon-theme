@@ -83,17 +83,17 @@
                id="stop162" />
           </linearGradient>
           <path
-             a:adobe-blending-mode="multiply"
+             
              style="opacity:0.2;fill:url(#XMLID_1_);stroke:none;"
              d="M99.039,84.77l28.23-11.604V61.278l-28.606-2.127l7.508,14.207       l-8.083,7.845L99.039,84.77z"
              id="path166" />
           <path
-             a:adobe-blending-mode="multiply"
+             
              style="opacity:0.2;stroke:none;"
              d="M21.159,114.374l28.124-7.415l7.913-11.729l-8.479-11.87       l-7.689,1.479V98.97L21.159,114.374z"
              id="path167" />
           <path
-             a:adobe-blending-mode="multiply"
+             
              style="opacity:0.2;stroke:none;"
              d="M62.672,115.543c0.224,3.271,9.62,5.292,20.988,4.516       c11.366-0.777,20.4-4.06,20.178-7.329c-0.223-3.271-9.62-5.292-20.988-4.516C71.482,108.991,62.449,112.272,62.672,115.543z"
              id="path168" />

@@ -414,19 +414,16 @@
         <path
            id="path194"
            d="m 16.334,18.018 -3.403,9.363 5.761,-0.798 -2.358,-8.565 z"
-           a:adobe-blending-mode="multiply"
            inkscape:connector-curvature="0"
            style="opacity:0.41000001;stroke:none" />
         <path
            id="path195"
            d="m 11.195,32.24 -1.96,5.371 0.306,1.68 7.837,-0.757 4.917,1.525 -0.824,-3.63 -10.276,-4.189 z"
-           a:adobe-blending-mode="multiply"
            inkscape:connector-curvature="0"
            style="opacity:0.2;stroke:none" />
         <path
            id="path196"
            d="M 38.176,39.837 31.304,48.164 42.81,47.02 50.1,38.886 36.643,34.715 38.176,39.837 Z"
-           a:adobe-blending-mode="multiply"
            inkscape:connector-curvature="0"
            style="opacity:0.2;stroke:none" />
       </g>
