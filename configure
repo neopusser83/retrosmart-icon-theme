@@ -62,7 +62,7 @@ do
     local bsource="$(basename "$source")"
     for j in $(cat $i)
     do
-         if [ $(expr substr $j 1 1) = \# ]
+         if [ $(echo $j | head -c 1) = \# ]
          then
              continue
          fi
