@@ -1,87 +1,86 @@
 #!/bin/sh
 
-if [ -f makefile ]
-then
-    echo "Configuration done. Run '$([ "$(uname)" = Linux ] && printf %smake||printf %s "gmake -f makefile")'."
-    exit 0
+if [ -f makefile ]; then
+	echo "Configuration done. Run '$([ "$(uname)" = Linux ] && printf %smake||printf %s "gmake -f makefile")'."
+	exit 0
 fi
 
 name=retrosmart-icon-theme
-path=$name/scalable
-suf='.svg'
+scalable_path=$name/scalable
+symbolic_path=$name/symbolic
+svg2png="convert -background none -resize 48x48 -density 600"
 
-for i in src/*.links
-do
-    source="src/$(basename $i .links)"
-    if [ -f "$source".png ]
-    then
-        links="$links $i"
-    elif [ -f "$source".svg ]
-    then
-        links="$links $i"
-    else
-        echo "File $source not found"
-        exit 1
-    fi
+for i in src/*.links; do
+	source="src/`basename $i .links`"
+
+	if [ -f "$source".png ] || [ -f "$source".svg ]; then
+		links="$links $i"
+	elif [ -f "$i" ]; then
+		echo "The file $i contains an invalid image."
+		exit 1
+	else
+		echo "Image for $i not found"
+		exit 1
+	fi
 done
 
-for i in $(cat src/preview.list)
-do
-    source="src/$i"
-    if [ -f "$source" ]
-        then
-            preview="$preview $source"
-        else
-            echo "File $source not found"
-            exit 1
-        fi
+for i in `cat src/preview.list`; do
+	source="src/$i"
+	if [ -f "$source" ]; then
+		preview="$preview $source"
+	else
+		echo "File $source not found"
+		exit 1
+	fi
 done
 
 makefile() {
+	echo "include makefile.in"
 
-echo "include makefile.in"
+	echo "$name:"
+	printf "\tmkdir -p $scalable_path\n"
+	printf "\tmkdir -p $symbolic_path\n"
 
-echo "$name:"
-printf "\tmkdir -p $path\n"
+	echo "$name/index.theme: $name"
+	printf "\tcp src/index.theme $name/\n"
 
-echo "$name/index.theme: $name"
-printf "\tcp src/index.theme $name/\n"
+	for i in $links; do
+		local source="src/`basename "$i" .links`.svg"
+		local bsource="`basename "$source"`"
+		local png_main=0
 
-for i in $links
-do
-    local prev_source="src/$(basename "$i" .links)"
+		for j in `cat $i`;do
+			 if [ `echo $j | head -c 1` = \# ]; then
+				 continue
+			 fi
 
-    if [ -f "$prev_source".png ]
-    then
-        local source="$prev_source".png
-    elif [ -f "$prev_source".svg ]
-    then
-        local source="$prev_source".svg
-    fi
+			if [ "$bsource" != "$j" ]; then
+				if [ "${j##*.}" = png ]; then
+					icons="$icons $symbolic_path/$j"
+					printf "$symbolic_path/$j: $name/index.theme\n"
+					if [ "$png_main" != "0" ]; then
+						printf "\tcd $symbolic_path && ln -s $png_main $j\n"
+					else
+						printf "\t$svg2png src/$bsource $symbolic_path/$j\n"
+						png_main="$j"
+					fi
+				elif [ "${j##*.}" = svg ]; then
+					icons="$icons $scalable_path/$j"
+					printf "$scalable_path/$j: $name/index.theme\n"
+					printf "\tcd $scalable_path && ln -s $bsource $j\n"
+				fi
+			else
+				icons="$icons $scalable_path/$j"
+				printf "$scalable_path/$j: $name/index.theme\n"
+				printf "\tcp $source $scalable_path/$j\n"
+			fi
+		done
+	done
 
-    local bsource="$(basename "$source")"
-    for j in $(cat $i)
-    do
-         if [ $(echo $j | head -c 1) = \# ]
-         then
-             continue
-         fi
-        icons="$icons $path/$j"
-        echo "$path/$j: $name/index.theme"
-        if [ "$bsource" = "$j" ]
-        then
-            printf "\tcp $source $path/$j\n"
-        else
-            printf "\tcd $path && ln -s $bsource $j\n"
-        fi
-    done
-done
+	echo "icons: $icons"
 
-echo "icons: $icons"
-
-echo "preview.png: $preview"
-printf "\tmontage -verbose -resize 64 -geometry +16+16 -tile 9x6 $preview preview.png"
-
+	echo "preview.png: $preview"
+	printf "\tmontage -verbose -resize 64 -geometry +16+16 -tile 9x6 $preview preview.png"
 }
 
 makefile > makefile && echo "Configuration done. Run '$([ "$(uname)" = Linux ] && printf %smake||printf %s "gmake -f makefile")'." || echo "Configuration failed. Please debug."
